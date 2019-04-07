@@ -92,8 +92,6 @@ public class Main extends Application {
         }
         if (buttonId.equals("stats")) {
             StatisticsData temp = listView.getItems().get(listView.getSelectionModel().getSelectedIndex());
-//            signalAvgValue.clear();
-//
             tpTF.clear();
             tpTF.appendText(temp.values.get("tp").toString());
             tnTF.clear();
@@ -121,7 +119,7 @@ public class Main extends Application {
             configurationFile.setDatasetCounter(1l);
         }
         else{
-            configurationFile.setDataset("src/dataset/");
+            configurationFile.setDatasetDestination("C:\\Users\\Przemysław\\Desktop\\Nowy folder (2)\\ksr_view\\KSR_with_view\\src\\main\\java\\dataset\\");
             configurationFile.setDatasetCounter(22l);
         }
         configurationFile.setDataTrainingPercentage(Integer.parseInt(dataTrainingPercentageTF.getCharacters().toString()));
