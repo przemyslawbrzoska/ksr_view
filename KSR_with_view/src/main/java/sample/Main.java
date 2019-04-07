@@ -116,8 +116,14 @@ public class Main extends Application {
     public ConfigurationFile prepare() {
         ConfigurationFile configurationFile = new ConfigurationFile();
         configurationFile.setDataset(datasetTF.getCharacters().toString());
-        configurationFile.setDatasetDestination(datasetLocationTF.getCharacters().toString());
-        configurationFile.setDatasetCounter(Long.parseLong(datasetFilesTF.getCharacters().toString()));
+        if(configurationFile.getDataset().equals("own")){
+            configurationFile.setDatasetDestination("C:/Users/Przemysław/Desktop/Nowy folder (2)/KSR_with_view/src/main/java/dataset/biologylove.txt");
+            configurationFile.setDatasetCounter(1l);
+        }
+        else{
+            configurationFile.setDataset("src/dataset/");
+            configurationFile.setDatasetCounter(22l);
+        }
         configurationFile.setDataTrainingPercentage(Integer.parseInt(dataTrainingPercentageTF.getCharacters().toString()));
         configurationFile.setDataClassificationPercentage(Integer.parseInt(dataClassificationPercentageTF.getCharacters().toString()));
         configurationFile.setCheckedTag(checkedTagTF.getCharacters().toString());

@@ -1,7 +1,7 @@
 {
   "kValue": 3,
   "dataset" : "own",
-  "datasetDestination": "src/dataset/biologylove.txt",
+  "datasetDestination": "C:\\Users\\Przemysław\\Desktop\\Nowy folder (2)\\KSR_with_view\\src\\main\\java\\dataset\\biologylove.txt",
   "datasetCounter": 1,
   "stopListDestination": "src/resources/",
   "dataTrainingPercentage": 60,
