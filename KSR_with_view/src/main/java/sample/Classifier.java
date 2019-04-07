@@ -150,8 +150,8 @@ public class Classifier {
             data.values.put("tn", tn);
             data.values.put("fn", tn);
             data.values.put("accuracy", accuracy);
-            data.values.put("precision", accuracy);
-            data.values.put("recall", accuracy);
+            data.values.put("precision", precision);
+            data.values.put("recall", recall);
 
 
 
