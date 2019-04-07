@@ -37,6 +37,10 @@ public class ConfigurationFile {
         this.metrics = metrics;
     }
 
+    public String getMetrics() {
+        return metrics;
+    }
+
     public int getK() {
         return k;
     }

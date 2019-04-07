@@ -1,6 +1,7 @@
 package sample;
 
 import java.util.*;
+
 import Extractors.*;
 import input.*;
 import metrics.*;
@@ -97,7 +98,17 @@ public class Classifier {
         }
         List<ExtractedData> extractedDataTraining = new ArrayList<>();
         int k = 1;
-        OurMetric metric = new ChebyshewDistance();
+
+        OurMetric metric = null;
+        if (configurationFile.getMetrics().equals("chebyshew")) {
+            metric = new ChebyshewDistance();
+        }
+        if (configurationFile.getMetrics().equals("manhatan")) {
+            metric = new ManhattanMetric();
+        }
+        if (configurationFile.getMetrics().equals("euclides")) {
+            metric = new EuclidianDistance();
+        }
         for (Article a : trainingList) {
             extractedDataTraining.add(a.getVector());
 
@@ -123,7 +134,7 @@ public class Classifier {
         out.println("Poprawne : " + String.format("%.2f", (double) correctClassifiedDocs / classifiedDocs.size() * 100) + "%\n");
 
 
-      List<StatisticsData> newStatisticsData = new ArrayList<StatisticsData>();
+        List<StatisticsData> newStatisticsData = new ArrayList<StatisticsData>();
         for (String label : whatLabels) {
             StatisticsData data = new StatisticsData(label);
             double tp = 0;
@@ -143,8 +154,8 @@ public class Classifier {
                 }
             }
             double accuracy = (tp + tn) / (tp + tn + fn + fp);
-            double precision = (tp)/(tp+fp);
-            double recall = (tp)/(tp+fn);
+            double precision = (tp) / (tp + fp);
+            double recall = (tp) / (tp + fn);
             data.values.put("tp", tp);
             data.values.put("fp", fp);
             data.values.put("tn", tn);
@@ -154,17 +165,15 @@ public class Classifier {
             data.values.put("recall", recall);
 
 
-
             out.println(label + " tp: " + tp + "\n"
                     + label + " tn: " + tn + "\n"
                     + label + " fp: " + fp + "\n"
                     + label + " fn: " + fn + "\n");
-            out.println("Accuracy for label " + label + " " +  accuracy*100 + "%");
-            out.println("Precision for label " + label + " " +  precision*100 + "%");
-            out.println("Recall for label " + label + " " +  recall*100 + "%");
-        newStatisticsData.add(data);
+            out.println("Accuracy for label " + label + " " + accuracy * 100 + "%");
+            out.println("Precision for label " + label + " " + precision * 100 + "%");
+            out.println("Recall for label " + label + " " + recall * 100 + "%");
+            newStatisticsData.add(data);
         }
-
 
 
         out.println(new GregorianCalendar().getTime());

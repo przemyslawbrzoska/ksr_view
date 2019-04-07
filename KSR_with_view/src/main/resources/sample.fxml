@@ -25,22 +25,24 @@
       <TextField fx:id="popularWordsTF" layoutX="14.0" layoutY="484.0" />
       <Label layoutX="14.0" layoutY="464.0" text="How many popular words" />
       <ListView fx:id="listView" layoutX="292.0" layoutY="24.0" prefHeight="200.0" prefWidth="200.0" />
-      <TextField fx:id="tpTF" layoutX="629.0" layoutY="34.0" />
-      <Label layoutX="629.0" layoutY="16.0" text="True Positive" />
-      <TextField fx:id="fpTF" layoutX="629.0" layoutY="79.0" />
-      <Label layoutX="629.0" layoutY="59.0" text="False Positive" />
-      <TextField fx:id="tnTF" layoutX="629.0" layoutY="124.0" />
-      <Label layoutX="629.0" layoutY="104.0" text="True Negative" />
-      <TextField fx:id="fnTF" layoutX="629.0" layoutY="169.0" />
-      <Label layoutX="629.0" layoutY="149.0" text="False Negative" />
-      <TextField fx:id="accuracyTF" layoutX="629.0" layoutY="212.0" />
-      <Label layoutX="629.0" layoutY="192.0" text="Accuracy" />
-      <TextField fx:id="recallTF" layoutX="629.0" layoutY="304.0" />
-      <Label layoutX="629.0" layoutY="284.0" text="Recall" />
-      <TextField fx:id="precisionTF" layoutX="629.0" layoutY="257.0" />
-      <Label layoutX="629.0" layoutY="237.0" text="Precision" />
+      <TextField fx:id="tpTF" layoutX="628.0" layoutY="86.0" />
+      <Label layoutX="628.0" layoutY="68.0" text="True Positive" />
+      <TextField fx:id="fpTF" layoutX="628.0" layoutY="131.0" />
+      <Label layoutX="628.0" layoutY="111.0" text="False Positive" />
+      <TextField fx:id="tnTF" layoutX="628.0" layoutY="176.0" />
+      <Label layoutX="628.0" layoutY="156.0" text="True Negative" />
+      <TextField fx:id="fnTF" layoutX="628.0" layoutY="221.0" />
+      <Label layoutX="628.0" layoutY="201.0" text="False Negative" />
+      <TextField fx:id="accuracyTF" layoutX="628.0" layoutY="264.0" />
+      <Label layoutX="628.0" layoutY="244.0" text="Accuracy" />
+      <TextField fx:id="recallTF" layoutX="628.0" layoutY="356.0" />
+      <Label layoutX="628.0" layoutY="336.0" text="Recall" />
+      <TextField fx:id="precisionTF" layoutX="628.0" layoutY="309.0" />
+      <Label layoutX="628.0" layoutY="289.0" text="Precision" />
       <Button fx:id="classify" layoutX="292.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="Classify" />
       <Button fx:id="stats" layoutX="440.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="Show statistics" />
       <Label layoutX="-94.0" layoutY="83.0" text="Label" />
+      <TextField id="labelIdTF" fx:id="labelTF" layoutX="631.0" layoutY="34.0" />
+      <Label layoutX="632.0" layoutY="14.0" text="Label" />
    </children>
 </AnchorPane>

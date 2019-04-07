@@ -24,12 +24,6 @@ public class Main extends Application {
     @FXML
     TextField datasetTF;
     @FXML
-    TextField datasetLocationTF;
-    @FXML
-    TextField datasetFilesTF;
-    @FXML
-    TextField stoplistlocationTF;
-    @FXML
     TextField dataTrainingPercentageTF;
     @FXML
     TextField dataClassificationPercentageTF;
@@ -63,6 +57,8 @@ public class Main extends Application {
     TextField precisionTF;
     @FXML
     TextField recallTF;
+    @FXML
+    TextField labelTF;
 
 
     @FXML
@@ -92,6 +88,9 @@ public class Main extends Application {
         }
         if (buttonId.equals("stats")) {
             StatisticsData temp = listView.getItems().get(listView.getSelectionModel().getSelectedIndex());
+
+            labelTF.clear();
+            labelTF.appendText(temp.label.toString());
             tpTF.clear();
             tpTF.appendText(temp.values.get("tp").toString());
             tnTF.clear();
