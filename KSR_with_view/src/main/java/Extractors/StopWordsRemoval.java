@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+
 import input.Article;
+import sample.FeatureDisabler;
 
 public class StopWordsRemoval {
     private List<String> stopwords;
@@ -25,7 +27,7 @@ public class StopWordsRemoval {
         stopwords = wordsList;
     }
 
-    public Article removeStopWord(Article article) {
+    public Article removeStopWord(Article article, FeatureDisabler featureDisabler) {
         List<String> toReturn = new ArrayList<>();
         List<String> bodyWords = article.getArticleBody();
         for (String word : bodyWords) {
@@ -33,8 +35,12 @@ public class StopWordsRemoval {
                 toReturn.add(word);
         }
         article.setArticleBody(toReturn);
-        article.vector.features.put("Removed words", (double) bodyWords.size() - toReturn.size());
-        article.vector.features.put("Removed words/article size", (double) bodyWords.size() - toReturn.size() / toReturn.size());
+        if (featureDisabler.isStopWords()) {
+            article.vector.features.put("Removed words", (double) bodyWords.size() - toReturn.size());
+        }
+        if (featureDisabler.isStopWordsFreq()) {
+            article.vector.features.put("Removed words/article size", (double) bodyWords.size() - toReturn.size() / toReturn.size());
+        }
         return article;
     }
 

@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -62,6 +63,23 @@ public class Main extends Application {
 
 
     @FXML
+    CheckBox keyWordsCheck;
+    @FXML
+    CheckBox keyWordsAllCheck;
+    @FXML
+    CheckBox stopWordsCheck;
+    @FXML
+    CheckBox stopWordsFreqCheck;
+    @FXML
+    CheckBox triGramsCheck;
+    @FXML
+    CheckBox triGramsFreqsCheck;
+    @FXML
+    CheckBox tfidfCheck;
+
+
+
+    @FXML
     ListView<StatisticsData> listView = new ListView<>();
 
 
@@ -82,7 +100,9 @@ public class Main extends Application {
         final String buttonId = button.getId();
         if (buttonId.equals("classify")) {
             ConfigurationFile file = prepare();
-            List<StatisticsData> data = Classifier.classify(file);
+            FeatureDisabler features= new FeatureDisabler();
+            disableFeatures(features);
+            List<StatisticsData> data = Classifier.classify(file, features);
             listView.getItems().clear();
             listView.getItems().addAll(data);
         }
@@ -130,7 +150,16 @@ public class Main extends Application {
         configurationFile.setHowManyPopularWordsToCheck(Integer.parseInt(popularWordsTF.getCharacters().toString()));
         return configurationFile;
     }
+    public void disableFeatures(FeatureDisabler feature){
 
+        feature.setKeyWords(!keyWordsCheck.isSelected());
+        feature.setKeyWordsFreq(!keyWordsAllCheck.isSelected());
+        feature.setStopWords(!stopWordsCheck.isSelected());
+        feature.setStopWordsFreq(!stopWordsFreqCheck.isSelected());
+        feature.setNgram(!triGramsCheck.isSelected());
+        feature.setNgramFreq(!triGramsFreqsCheck.isSelected());
+        feature.setTfidf(!tfidfCheck.isSelected());
+    }
 
     public static void main(String[] args) {
         launch(args);

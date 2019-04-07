@@ -10,7 +10,7 @@ import metrics.*;
 import static java.lang.System.*;
 
 public class Classifier {
-    public static List<StatisticsData> classify(ConfigurationFile configurationFile) {
+    public static List<StatisticsData> classify(ConfigurationFile configurationFile, FeatureDisabler featureDisabler) {
         out.println(new GregorianCalendar().getTime());
         InputUtils inputUtils = new InputUtils();
         //ConfigurationFile configurationFile = new ConfigurationFile(inputUtils.readJson("src/config.json"));
@@ -51,7 +51,7 @@ public class Classifier {
         }
         out.println("labelki");
         for (Article art : articlesParsed) {
-            test.removeStopWord(art);
+            test.removeStopWord(art, featureDisabler);
         }
         out.println("removed stop words");
         List<Article> trainingList = inputUtils.getPartOfAllList(articlesParsed, configurationFile.getDataTrainingPercentage());// configurationFile.getDataTrainingPercentage());
@@ -77,20 +77,24 @@ public class Classifier {
 
         for (Article art : testingList) {
             for (TriGramModel model : triGramModelList) {
-                inputUtils.setInVectorHowManyTrigramsMatch(art, model);
+                inputUtils.setInVectorHowManyTrigramsMatch(art, model, featureDisabler);
             }
         }
 
         for (Article art : testingList) {
             for (PopularityWordsModel model : popularityWordsModelList) {
-                inputUtils.setInVectorHowManyPopularityWordsMatch(art, model);
+                inputUtils.setInVectorHowManyPopularityWordsMatch(art, model,featureDisabler);
             }
         }
-        for (Article art : testingList) {
-            for (TFIDFModel model : TFIDFModelList) {
-                inputUtils.setInVectorTFIDFValues(art, model);
+        if(featureDisabler.tfidf) {
+            for (Article art : testingList) {
+                for (TFIDFModel model : TFIDFModelList) {
+                    inputUtils.setInVectorTFIDFValues(art, model);
+                }
             }
         }
+
+
 
         List<ExtractedData> extractedDataTest = new ArrayList<>();
         for (Article a : testingList) {
@@ -116,7 +120,7 @@ public class Classifier {
         long startClassification = currentTimeMillis();
         KNNmethod knn = new KNNmethod(k, new String[]{}, extractedDataTraining);
 
-        List<ResultData> classifiedDocs = knn.classify(extractedDataTest, metric, 5);
+        List<ResultData> classifiedDocs = knn.classify(extractedDataTest, metric, 0);
         out.println("Sklasyfikowane dokumenty : " + classifiedDocs.size());
         long finishClassification = currentTimeMillis();
         int correctClassifiedDocs = 0;

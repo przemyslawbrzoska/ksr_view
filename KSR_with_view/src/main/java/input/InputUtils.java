@@ -10,7 +10,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
+
 import Extractors.*;
+import sample.FeatureDisabler;
 
 public class InputUtils {
     private long onWhichArticleTrainingListStop = 0;
@@ -50,10 +52,10 @@ public class InputUtils {
         return allFilesRead.toString();
     }
 
-    public String readOwnRawArticlesToString(ConfigurationFile configurationFile){
+    public String readOwnRawArticlesToString(ConfigurationFile configurationFile) {
         StringBuilder allFilesRead = new StringBuilder();
         String temp = null;
-        for(int i =0; i < configurationFile.getDatasetCounter(); i++) {
+        for (int i = 0; i < configurationFile.getDatasetCounter(); i++) {
             String path = configurationFile.getDatasetDestination();
             try (Stream<String> stream = Files.lines(Paths.get(path), StandardCharsets.ISO_8859_1)) {
                 stream.forEach(allFilesRead::append);
@@ -61,7 +63,7 @@ public class InputUtils {
                 e.printStackTrace();
             }
         }
-            return allFilesRead.toString();
+        return allFilesRead.toString();
 
     }
 
@@ -215,13 +217,13 @@ public class InputUtils {
         }
         for (Map.Entry<String, Integer> entry : mapaSlow.entrySet()) {
             double log = Math.log(Math.abs(articles.size()) / mapaSlowDF.get(entry.getKey()));
-            if(log == 0) {
+            if (log == 0) {
                 log = 0.00000001;
             }
             newModel.getModel().put(entry.getKey(), entry.getValue() / log);
         }
-        for(Map.Entry<String, Double> entry : newModel.getModel().entrySet()){
-            if(entry.getValue()>200){
+        for (Map.Entry<String, Double> entry : newModel.getModel().entrySet()) {
+            if (entry.getValue() > 200) {
                 newModel.getModel().entrySet().remove(entry.getKey());
             }
         }
@@ -229,7 +231,7 @@ public class InputUtils {
         return newModel; //problem jest taki że teraz muszę się odwołać do każdego badanego artykułu, więc ta metoda w sumie zwraca tylko te liste
     }
 
-    public void setInVectorHowManyTrigramsMatch(Article art, TriGramModel triGramModel) {
+    public void setInVectorHowManyTrigramsMatch(Article art, TriGramModel triGramModel, FeatureDisabler featureDisabler) {
         String[] arrayForSingleTriGram = new String[3];
         double matchesCounter = 0;
         for (int i = 0; i < art.getArticleBody().size() - 2; i++) {
@@ -247,11 +249,15 @@ public class InputUtils {
             }
         }
 
-        art.vector.features.put("Trigrams matched from model " + triGramModel.getLabel(), matchesCounter);
-     //   art.vector.features.put("Trigrams matched from model/how many in article " + triGramModel.getLabel(), matchesCounter / art.getArticleBody().size());
+        if (featureDisabler.isNgram()) {
+            art.vector.features.put("Trigrams matched from model " + triGramModel.getLabel(), matchesCounter);
+        }
+        if (featureDisabler.isNgramFreq()) {
+            art.vector.features.put("Trigrams matched from model/how many in article " + triGramModel.getLabel(), matchesCounter / art.getArticleBody().size());
+        }
     }
 
-    public void setInVectorHowManyPopularityWordsMatch(Article art, PopularityWordsModel popularityWordsModel) {
+    public void setInVectorHowManyPopularityWordsMatch(Article art, PopularityWordsModel popularityWordsModel, FeatureDisabler featureDisabler) {
         int counterOfMatchedPriorityWords = 0;
 
         for (String bodyWord : art.getArticleBody()) {
@@ -260,9 +266,12 @@ public class InputUtils {
                     counterOfMatchedPriorityWords++;
             }
         }
-
-        art.vector.features.put("Matched from priority words " + popularityWordsModel.getLabel(), (double) counterOfMatchedPriorityWords);
-    //    art.vector.features.put("Matched from priority words/all article words " + popularityWordsModel.getLabel(), (double) counterOfMatchedPriorityWords / art.getArticleBody().size());
+        if (featureDisabler.isKeyWords()) {
+            art.vector.features.put("Matched from priority words " + popularityWordsModel.getLabel(), (double) counterOfMatchedPriorityWords);
+        }
+        if (featureDisabler.isKeyWordsFreq()) {
+            art.vector.features.put("Matched from priority words/all article words " + popularityWordsModel.getLabel(), (double) counterOfMatchedPriorityWords / art.getArticleBody().size());
+        }
     }
 
     public void setInVectorTFIDFValues(Article art, TFIDFModel tfidfModel) {
