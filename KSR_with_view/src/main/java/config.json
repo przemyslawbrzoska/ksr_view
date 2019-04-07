@@ -1,0 +1,13 @@
+{
+  "kValue": 3,
+  "dataset" : "own",
+  "datasetDestination": "src/dataset/biologylove.txt",
+  "datasetCounter": 1,
+  "stopListDestination": "src/resources/",
+  "dataTrainingPercentage": 60,
+  "dataClassificationPercentage": 40,
+  "createKeyWords": true,
+  "checkedTag": "TOPICS",
+  "checkedTagLabels": "love biology",
+  "howManyPopularWords" : 5
+}
