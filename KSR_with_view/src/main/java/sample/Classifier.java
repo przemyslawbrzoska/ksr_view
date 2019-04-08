@@ -101,7 +101,7 @@ public class Classifier {
             extractedDataTest.add(a.getVector());
         }
         List<ExtractedData> extractedDataTraining = new ArrayList<>();
-        int k = 1;
+        int k = configurationFile.getK();
 
         OurMetric metric = null;
         if (configurationFile.getMetrics().equals("chebyshew")) {
