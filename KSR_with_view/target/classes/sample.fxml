@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Main">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Main">
    <children>
       <TextField fx:id="datasetTF" layoutX="14.0" layoutY="34.0" />
       <Label layoutX="14.0" layoutY="14.0" text="Dataset" />
@@ -14,33 +15,55 @@
       <Label layoutX="14.0" layoutY="194.0" text="Data training percentage" />
       <TextField fx:id="dataClassificationPercentageTF" layoutX="14.0" layoutY="259.0" />
       <Label layoutX="14.0" layoutY="239.0" text="Data classification percentage" />
-      <TextField fx:id="checkedTagTF" layoutX="14.0" layoutY="304.0" />
-      <Label layoutX="14.0" layoutY="284.0" text="Checked tag" />
-      <TextField fx:id="checkedLabelsTF" layoutX="14.0" layoutY="349.0" />
-      <Label layoutX="14.0" layoutY="329.0" text="Checked labels" />
       <TextField fx:id="kTF" layoutX="14.0" layoutY="394.0" />
       <Label fx:id="k" layoutX="14.0" layoutY="374.0" text="K value" />
       <TextField fx:id="metricsTF" layoutX="14.0" layoutY="439.0" />
-      <Label layoutX="14.0" layoutY="419.0" text="Metrics" />
+      <Label layoutX="14.0" layoutY="419.0" text="Metric ( cheb / manh/ eucl)" />
       <TextField fx:id="popularWordsTF" layoutX="14.0" layoutY="484.0" />
       <Label layoutX="14.0" layoutY="464.0" text="How many popular words" />
       <ListView fx:id="listView" layoutX="292.0" layoutY="24.0" prefHeight="200.0" prefWidth="200.0" />
-      <TextField fx:id="tpTF" layoutX="629.0" layoutY="34.0" />
-      <Label layoutX="629.0" layoutY="16.0" text="True Positive" />
-      <TextField fx:id="fpTF" layoutX="629.0" layoutY="79.0" />
-      <Label layoutX="629.0" layoutY="59.0" text="False Positive" />
-      <TextField fx:id="tnTF" layoutX="629.0" layoutY="124.0" />
-      <Label layoutX="629.0" layoutY="104.0" text="True Negative" />
-      <TextField fx:id="fnTF" layoutX="629.0" layoutY="169.0" />
-      <Label layoutX="629.0" layoutY="149.0" text="False Negative" />
-      <TextField fx:id="accuracyTF" layoutX="629.0" layoutY="212.0" />
-      <Label layoutX="629.0" layoutY="192.0" text="Accuracy" />
-      <TextField fx:id="recallTF" layoutX="629.0" layoutY="304.0" />
-      <Label layoutX="629.0" layoutY="284.0" text="Recall" />
-      <TextField fx:id="precisionTF" layoutX="629.0" layoutY="257.0" />
-      <Label layoutX="629.0" layoutY="237.0" text="Precision" />
-      <Button fx:id="classify" layoutX="292.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="Classify" />
+      <TextField fx:id="tpTF" layoutX="628.0" layoutY="86.0" />
+      <Label layoutX="628.0" layoutY="68.0" text="True Positive" />
+      <TextField fx:id="fpTF" layoutX="628.0" layoutY="131.0" />
+      <Label layoutX="628.0" layoutY="111.0" text="False Positive" />
+      <TextField fx:id="tnTF" layoutX="628.0" layoutY="176.0" />
+      <Label layoutX="628.0" layoutY="156.0" text="True Negative" />
+      <TextField fx:id="fnTF" layoutX="628.0" layoutY="221.0" />
+      <Label layoutX="628.0" layoutY="201.0" text="False Negative" />
+      <TextField fx:id="accuracyTF" layoutX="628.0" layoutY="264.0" />
+      <Label layoutX="628.0" layoutY="244.0" text="Accuracy" />
+      <TextField fx:id="recallTF" layoutX="628.0" layoutY="356.0" />
+      <Label layoutX="628.0" layoutY="336.0" text="Recall" />
+      <TextField fx:id="precisionTF" layoutX="628.0" layoutY="309.0" />
+      <Label layoutX="628.0" layoutY="289.0" text="Precision" />
+      <Button fx:id="classify" layoutX="358.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="Classify" />
       <Button fx:id="stats" layoutX="440.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="Show statistics" />
       <Label layoutX="-94.0" layoutY="83.0" text="Label" />
+      <TextField id="labelIdTF" fx:id="labelTF" layoutX="631.0" layoutY="34.0" />
+      <Label layoutX="632.0" layoutY="14.0" text="Label" />
+      <Label layoutX="213.0" layoutY="360.0" text="KeyWords" />
+      <Label layoutX="213.0" layoutY="383.0" text="KeyWords/allWords" />
+      <Label layoutX="213.0" layoutY="407.0" text="StopWords" />
+      <Label layoutX="213.0" layoutY="431.0" text="StopWords/allWords" />
+      <Label layoutX="213.0" layoutY="501.0" text="TFIDF" />
+      <CheckBox fx:id="keyWordsCheck" layoutX="340.0" layoutY="360.0" mnemonicParsing="false" text="off" />
+      <CheckBox fx:id="keyWordsAllCheck" layoutX="340.0" layoutY="383.0" mnemonicParsing="false" text="off" />
+      <CheckBox fx:id="stopWordsCheck" layoutX="340.0" layoutY="407.0" mnemonicParsing="false" text="off" />
+      <CheckBox fx:id="stopWordsFreqCheck" layoutX="340.0" layoutY="431.0" mnemonicParsing="false" text="off" />
+      <CheckBox fx:id="tfidfCheck" layoutX="340.0" layoutY="501.0" mnemonicParsing="false" text="off" />
+      <Button fx:id="train" layoutX="291.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleOnAnyButtonClicked" text="Train" />
+      <Label layoutX="14.0" layoutY="68.0" text="reutPL / reutTP / own" />
+      <Label layoutX="414.0" layoutY="360.0" text="Word0-3" />
+      <Label layoutX="414.0" layoutY="383.0" text="Word3-6" />
+      <Label layoutX="413.0" layoutY="407.0" text="Word6-inf" />
+      <Label layoutX="414.0" layoutY="431.0" text="FirstHalfKey" />
+      <Label layoutX="392.0" layoutY="456.0" text="SecondHalfKey" />
+      <Label layoutX="213.0" layoutY="456.0" text="AvgWordLength" />
+      <CheckBox fx:id="avgWord" layoutX="340.0" layoutY="456.0" mnemonicParsing="false" text="off" />
+      <CheckBox fx:id="word03" layoutX="480.0" layoutY="360.0" mnemonicParsing="false" text="off" />
+      <CheckBox fx:id="word36" layoutX="480.0" layoutY="386.0" mnemonicParsing="false" text="off" />
+      <CheckBox fx:id="word6" layoutX="480.0" layoutY="411.0" mnemonicParsing="false" text="off" />
+      <CheckBox fx:id="firstHalf" layoutX="480.0" layoutY="431.0" mnemonicParsing="false" prefHeight="9.0" prefWidth="36.0" text="off" />
+      <CheckBox fx:id="secHalf" layoutX="480.0" layoutY="456.0" mnemonicParsing="false" text="off" />
    </children>
 </AnchorPane>

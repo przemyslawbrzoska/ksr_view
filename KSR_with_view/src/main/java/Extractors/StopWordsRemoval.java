@@ -17,7 +17,7 @@ public class StopWordsRemoval {
 
     public StopWordsRemoval() {
         StringBuilder allFilesRead = new StringBuilder();
-        try (Stream<String> stream = Files.lines(Paths.get("C:\\Users\\Przemysław\\Desktop\\RepoKSR\\KSR_1\\KSR_2019_PBTK\\src\\main\\resources\\stopwords.txt"), StandardCharsets.ISO_8859_1)) {
+        try (Stream<String> stream = Files.lines(Paths.get("C:\\Users\\Przemysław\\Desktop\\Nowy folder (2)\\ksr_view\\KSR_with_view\\src\\main\\resources\\stopwords.txt"), StandardCharsets.ISO_8859_1)) {
             stream.forEach(allFilesRead::append);
         } catch (IOException e) {
             e.printStackTrace();
@@ -27,7 +27,7 @@ public class StopWordsRemoval {
         stopwords = wordsList;
     }
 
-    public Article removeStopWord(Article article, FeatureDisabler featureDisabler) {
+    public Article removeStopWord(Article article) {
         List<String> toReturn = new ArrayList<>();
         List<String> bodyWords = article.getArticleBody();
         for (String word : bodyWords) {
@@ -35,12 +35,11 @@ public class StopWordsRemoval {
                 toReturn.add(word);
         }
         article.setArticleBody(toReturn);
-        if (featureDisabler.isStopWords()) {
-            article.vector.features.put("Removed words", (double) bodyWords.size() - toReturn.size());
-        }
-        if (featureDisabler.isStopWordsFreq()) {
-            article.vector.features.put("Removed words/article size", (double) bodyWords.size() - toReturn.size() / toReturn.size());
-        }
+
+        article.vector.features.put("Removed words", (double) bodyWords.size() - toReturn.size());
+        article.vector.features.put("Removed words/article size", (double) bodyWords.size() - toReturn.size() / toReturn.size());
+
+
         return article;
     }
 

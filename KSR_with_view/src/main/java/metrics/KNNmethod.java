@@ -15,8 +15,29 @@ public class KNNmethod {
         this.labels = labels;
         this.trainingData = trainingData;
     }
+    public void init(List<ExtractedData> testData){
+        trainingData.add(testData.remove(0));
+        List<String> labelList = new ArrayList<>();
+        labelList.add(trainingData.get(0).label);
+       for(int i =0; i < testData.size(); i++){
+           ExtractedData item = testData.get(i);
+            if(!labelList.contains(item.label)){
+                trainingData.add(testData.remove(i));
+                labelList.add(item.label);
+            }
+        }
 
+    }
     public List<ResultData> classify(List<ExtractedData> testData, OurMetric metric, int limitSize) {
+        //limitSize = 13;
+        trainingData.clear();
+//        for(int i = 0; i < 6; i++){
+//
+//            trainingData.add(testData.remove(i));
+//        }
+        init(testData);
+        init(testData);
+        init(testData);
         List<ResultData> results = new ArrayList<>();
         // sorting and cutting
         if (limitSize != 0) {

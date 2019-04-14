@@ -15,7 +15,78 @@ import Extractors.*;
 import sample.FeatureDisabler;
 
 public class InputUtils {
-    private long onWhichArticleTrainingListStop = 0;
+    public long onWhichArticleTrainingListStop = 0;
+
+    public void addToVectorAverageWordLength(Article art) {
+        double avg = 0;
+        for (String word : art.getArticleBody()) {
+            avg += word.length();
+        }
+        art.vector.features.put("AverageWordLength", avg / art.getArticleBody().size());
+    }
+
+    public void addToVectorArticleLength(Article art) {
+
+        art.vector.features.put("ArticleLength", (double) art.getArticleBody().size());
+    }
+
+
+    public void addToVectorHowManyWordsUnderOrEqual3Letters(Article art) {
+        int counter = 0;
+        for(String word : art.getArticleBody()){
+            if (word.length() <= 3){
+                counter ++;
+            }
+        }
+        art.vector.features.put("WordsUnderOrEqual3Letters", (double)counter);
+    }
+
+    public void addToVectorHowManyWordsOver3Under6Letters(Article art) {
+        int counter = 0;
+        for(String word : art.getArticleBody()){
+            if (word.length() > 3 && word.length() <= 6){
+                counter ++;
+            }
+        }
+        art.vector.features.put("WordsOver3UnderEqual6Letters", (double)counter);
+    }
+
+
+    public void addToVectorHowManyWordsOver6Letters(Article art) {
+        int counter = 0;
+        for(String word : art.getArticleBody()){
+            if (word.length() > 6){
+                counter ++;
+            }
+        }
+        art.vector.features.put("WordsOver6Letters", (double)counter);
+    }
+
+    public void addToVectorHowManyKeyWordsInFirstHalf(Article art, PopularityWordsModel popularityWordsModel) {
+        int counter = 0;
+        List<String> fullArt = new ArrayList<>();
+
+        for(String word : popularityWordsModel.getExtractedWords()){
+            for(int i = 0; i < fullArt.size()/2; i++){
+                if(word.equals(fullArt.get(i)))
+                    counter++;
+            }
+        }
+        art.vector.features.put("HowManyKeyWordsInFirstHalf", (double)counter);
+    }
+
+    public void addToVectorHowManyKeyWordsInSecondHalf(Article art, PopularityWordsModel popularityWordsModel) {
+        int counter = 0;
+        List<String> fullArt = new ArrayList<>();
+
+        for(String word : popularityWordsModel.getExtractedWords()){
+            for(int i = fullArt.size(); i > fullArt.size()/2; i--){
+                if(word.equals(fullArt.get(i)))
+                    counter++;
+            }
+        }
+        art.vector.features.put("HowManyKeyWordsInFirstHalf", (double)counter);
+    }
 
     public JSONObject readJson(String s) {
         JSONParser jsonParser = new JSONParser();
@@ -55,6 +126,8 @@ public class InputUtils {
     public String readOwnRawArticlesToString(ConfigurationFile configurationFile) {
         StringBuilder allFilesRead = new StringBuilder();
         String temp = null;
+
+
         for (int i = 0; i < configurationFile.getDatasetCounter(); i++) {
             String path = configurationFile.getDatasetDestination();
             try (Stream<String> stream = Files.lines(Paths.get(path), StandardCharsets.ISO_8859_1)) {
@@ -86,17 +159,19 @@ public class InputUtils {
 
     public List<Article> getPartOfAllList(List<Article> listOfArticles, int percentage) {
         List<Article> extractedArticles = new ArrayList<Article>();
+        long d = listOfArticles.size() * percentage / 100 - 1;
         if (onWhichArticleTrainingListStop == 0) {
-            long d = listOfArticles.size() * percentage / 100 - 1;
+
             for (int i = 0; i < d; i++) {
                 extractedArticles.add(listOfArticles.get(i));
 
             }
         } else {
-            for (int i = (int) onWhichArticleTrainingListStop; i < listOfArticles.size() - 1; i++) {
+            for (int i = (int) onWhichArticleTrainingListStop; i < listOfArticles.size() * percentage / 100 - 1 + onWhichArticleTrainingListStop; i++) {
                 extractedArticles.add(listOfArticles.get(i));
             }
         }
+        onWhichArticleTrainingListStop = d;
         return extractedArticles;
     }
 
@@ -248,7 +323,6 @@ public class InputUtils {
                 }
             }
         }
-
         if (featureDisabler.isNgram()) {
             art.vector.features.put("Trigrams matched from model " + triGramModel.getLabel(), matchesCounter);
         }

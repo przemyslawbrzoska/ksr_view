@@ -20,6 +20,8 @@ import java.util.List;
 
 public class Main extends Application {
 
+    Classifier classifier = new Classifier();
+
     @FXML
     TextField kTF;
     @FXML
@@ -28,10 +30,6 @@ public class Main extends Application {
     TextField dataTrainingPercentageTF;
     @FXML
     TextField dataClassificationPercentageTF;
-    @FXML
-    TextField checkedTagTF;
-    @FXML
-    TextField checkedLabelsTF;
     @FXML
     TextField metricsTF;
     @FXML
@@ -42,6 +40,8 @@ public class Main extends Application {
     Button classify;
     @FXML
     Button stats;
+    @FXML
+    Button train;
 
 
     @FXML
@@ -76,6 +76,18 @@ public class Main extends Application {
     CheckBox triGramsFreqsCheck;
     @FXML
     CheckBox tfidfCheck;
+    @FXML
+    CheckBox avgWord;
+    @FXML
+    CheckBox word03;
+    @FXML
+    CheckBox word36;
+    @FXML
+    CheckBox word6;
+    @FXML
+    CheckBox firstHalf;
+    @FXML
+    CheckBox secHalf;
 
 
 
@@ -92,20 +104,28 @@ public class Main extends Application {
             Platform.exit();
         });
         primaryStage.show();
+
     }
 
     @FXML
     protected void handleOnAnyButtonClicked(ActionEvent evt) {
+        ConfigurationFile file = prepare();
+        FeatureDisabler features= new FeatureDisabler();
+
         Button button = (Button) evt.getSource();
         final String buttonId = button.getId();
+
+        if (buttonId.equals("train")){
+            classifier.train(file);
+        }
+
         if (buttonId.equals("classify")) {
-            ConfigurationFile file = prepare();
-            FeatureDisabler features= new FeatureDisabler();
             disableFeatures(features);
-            List<StatisticsData> data = Classifier.classify(file, features);
+            List<StatisticsData> data = classifier.classify(file, features);
             listView.getItems().clear();
             listView.getItems().addAll(data);
         }
+
         if (buttonId.equals("stats")) {
             StatisticsData temp = listView.getItems().get(listView.getSelectionModel().getSelectedIndex());
 
@@ -136,15 +156,25 @@ public class Main extends Application {
         if(configurationFile.getDataset().equals("own")){
             configurationFile.setDatasetDestination("C:/Users/Przemysław/Desktop/Nowy folder (2)/KSR_with_view/src/main/java/dataset/biologylove.txt");
             configurationFile.setDatasetCounter(1l);
+            configurationFile.setCheckedTag("TOPICS");
+            configurationFile.setCheckedTagLabels("biology love");
+        }
+        else if (configurationFile.getDataset().equals("reutPL")){
+
+            configurationFile.setDatasetDestination("C:\\Users\\Przemysław\\Desktop\\Nowy folder (2)\\ksr_view\\KSR_with_view\\src\\main\\java\\dataset\\");
+            configurationFile.setCheckedTag("PLACES");
+            configurationFile.setCheckedTagLabels("usa west-germany france canada uk japan");
+            configurationFile.setDatasetCounter(22l);
         }
         else{
             configurationFile.setDatasetDestination("C:\\Users\\Przemysław\\Desktop\\Nowy folder (2)\\ksr_view\\KSR_with_view\\src\\main\\java\\dataset\\");
+            configurationFile.setCheckedTag("TOPICS");
+            configurationFile.setCheckedTagLabels("earn acq");
             configurationFile.setDatasetCounter(22l);
         }
         configurationFile.setDataTrainingPercentage(Integer.parseInt(dataTrainingPercentageTF.getCharacters().toString()));
         configurationFile.setDataClassificationPercentage(Integer.parseInt(dataClassificationPercentageTF.getCharacters().toString()));
-        configurationFile.setCheckedTag(checkedTagTF.getCharacters().toString());
-        configurationFile.setCheckedTagLabels(checkedLabelsTF.getCharacters().toString());
+
         configurationFile.setK(Integer.parseInt(kTF.getCharacters().toString()));
         configurationFile.setMetrics(metricsTF.getCharacters().toString());
         configurationFile.setHowManyPopularWordsToCheck(Integer.parseInt(popularWordsTF.getCharacters().toString()));
@@ -152,12 +182,19 @@ public class Main extends Application {
     }
     public void disableFeatures(FeatureDisabler feature){
 
+        feature.setAvgWord(!avgWord.isSelected());
+        feature.setFirstHalf(!firstHalf.isSelected());
+        feature.setSecondHalf(!secHalf.isSelected());
+        feature.setWord36(!word36.isSelected());
+        feature.setWord03(!word03.isSelected());
+        feature.setWord6(!word6.isSelected());
+
         feature.setKeyWords(!keyWordsCheck.isSelected());
         feature.setKeyWordsFreq(!keyWordsAllCheck.isSelected());
         feature.setStopWords(!stopWordsCheck.isSelected());
         feature.setStopWordsFreq(!stopWordsFreqCheck.isSelected());
-        feature.setNgram(!triGramsCheck.isSelected());
-        feature.setNgramFreq(!triGramsFreqsCheck.isSelected());
+//        feature.setNgram(!triGramsCheck.isSelected());
+//        feature.setNgramFreq(!triGramsFreqsCheck.isSelected());
         feature.setTfidf(!tfidfCheck.isSelected());
     }
 
