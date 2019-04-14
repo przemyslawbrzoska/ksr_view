@@ -30,14 +30,14 @@ public class KNNmethod {
     }
     public List<ResultData> classify(List<ExtractedData> testData, OurMetric metric, int limitSize) {
         //limitSize = 13;
-        trainingData.clear();
+      //  trainingData.clear();
 //        for(int i = 0; i < 6; i++){
 //
 //            trainingData.add(testData.remove(i));
 //        }
-        init(testData);
-        init(testData);
-        init(testData);
+ //       init(testData);
+ //       init(testData);
+ //       init(testData);
         List<ResultData> results = new ArrayList<>();
         // sorting and cutting
         if (limitSize != 0) {
